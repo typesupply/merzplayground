@@ -17,30 +17,22 @@ class MerzPlaygroundWindowController(BaseWindowController):
         self.w = vanilla.Window((400, 400), "Merz Playground", minSize=(200, 200))
         self.w.getNSWindow().setFrameUsingName_(self.windowAutoSaveName)
 
-        # Toolbar
-        # -------
-        toolbarItems = [
-            dict(itemIdentifier="run",
-                label="Run",
-                # imageNamed="toolbarRun",
-                callback=self.runCode,
-                # imageTemplate=True,
-                )
-            ]
-        self.w.addToolbar(
-            toolbarIdentifier="MerzPlaygroundWindowToolbar",
-            toolbarItems=toolbarItems,
-            addStandardItems=False
-        )
-
         # Code
         # ----
-        self.codeEditor = CodeEditor((0, 0, -0, -0))
+        self.codeGroup = vanilla.Group((0, 0, 0, 0))
+        self.codeEditor = self.codeGroup.codeEditor = CodeEditor((0, 0, -0, -45))
+        self.runButton = self.codeGroup.runButton = vanilla.Button(
+            (15, -35, -15, 20),
+            "Run",
+            callback=self.runCode
+        )
+        self.runButton.bind("r", ["command"])
         self.outputEditor = OutPutEditor((0, 0, -0, -0), readOnly=True)
+
         paneDescriptions = [
             dict(
-                view=self.codeEditor,
-                identifier="codeEditor",
+                view=self.codeGroup,
+                identifier="codeGroup",
                 minSize=50,
                 canCollapse=False
             ),
